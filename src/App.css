@@ -144,3 +144,8 @@ h2 {
   padding: 0px 5px 0px 5px;
   border: dashed 1px #9aa0a6;
 } 
+
+#additionalActions {
+  clear: both;
+  padding-top: 8.2em;
+}

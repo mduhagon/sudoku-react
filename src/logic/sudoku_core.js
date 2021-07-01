@@ -150,23 +150,44 @@ function isConflicting(sudokuGrid, rowIndex, colIndex) {
     return false;
 }
 
-// Given an Array of N cells (uni-dimensional)
-// Return a new array containing all cells with duplicate value (a value that occurs more than once)
-// If there are no duplicates return an empty array
-function getDuplicateCells(cellArray) {
-    let duplicates = [];
-    for (let i = 0; i < cellArray.length; i++) {
-        let current = cellArray[i];
-        if (current.value == 0) continue; // 0 is the special empty value, does not count as duplicate
-        for (let y = 0; y < cellArray.length; y++) {
-            if (i != y && current.value === cellArray[y].value) {
-                //current is duplicate, store in result and move on to next element
-                duplicates.push(current);
-                break;
-            }
+function calculateNotes(sudokuGrid) {
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            let cell = sudokuGrid[r][c];
+            if (cell.value === 0) {
+                cell.notes = findPossibleCellValues(sudokuGrid, r, c);
+            }    
+        }
+    }
+}
+
+function findPossibleCellValues(sudokuGrid, rowIndex, colIndex) {
+    // I will take advantage of the fact each possible number
+    // will be at index = number on this array
+    let possibleInOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    for (let i = 0; i < 9; i++) {
+        possibleInOrder[sudokuGrid[rowIndex][i].value] = 0;
+        possibleInOrder[sudokuGrid[i][colIndex].value] = 0;
+    }
+
+    let rowBoxIdx = (rowIndex/3>>0);
+    let colBoxIdx = (colIndex/3>>0);
+    let rowBoxStart = rowBoxIdx * 3;
+    let colBoxStart = colBoxIdx * 3;
+    for (let r = rowBoxStart; r < rowBoxStart+3; r++) {
+        for (let c = colBoxStart; c < colBoxStart+3; c++) {
+            possibleInOrder[sudokuGrid[r][c].value] = 0;
         }    
     }
-    return duplicates;
+
+    let possible = [];
+
+    for (let i = 1; i < possibleInOrder.length; i++) {
+        if (possibleInOrder[i] !== 0) possible.push(possibleInOrder[i]);
+    }
+
+    return possible;
 }
 
 // This defines which functions inside this file/module are 
@@ -177,5 +198,6 @@ module.exports = {
     getCellKey,
     constructSudokuGrid,
     getAllRelatedCells,
-    getConflictingCells
+    getConflictingCells,
+    calculateNotes
 };

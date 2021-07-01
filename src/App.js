@@ -15,6 +15,7 @@ export default class App extends React.Component {
       gameState: gameGrid,
       selectedCellRow: 4,
       selectedCellCol: 4,
+      autoNotes: false
     };
 
     this.handleCellSelected = this.handleCellSelected.bind(this);
@@ -22,6 +23,7 @@ export default class App extends React.Component {
     this.handleInputNote = this.handleInputNote.bind(this);
     this.handleClearValue = this.handleClearValue.bind(this);
     this.handleClearNotes = this.handleClearNotes.bind(this);
+    this.handleAutoNotesToggle = this.handleAutoNotesToggle.bind(this);
   }
 
   handleCellSelected(rowIndex, colIndex) {
@@ -34,9 +36,15 @@ export default class App extends React.Component {
   handleInputValue(input) {
     if (this.state.selectedCellRow == null || this.state.selectedCellCol == null) return;
 
-    var cloned = JSON.parse(JSON.stringify(this.state.gameState));
+    var cloned = this.cloneGameState();
     cloned[this.state.selectedCellRow][this.state.selectedCellCol].value = parseInt(input);
+    
+    if (this.state.autoNotes) {
+      logic.calculateNotes(cloned);
+    }
+    
     cloned[this.state.selectedCellRow][this.state.selectedCellCol].notes = [];
+
     this.setState({
       gameState: cloned
     })
@@ -48,8 +56,12 @@ export default class App extends React.Component {
     //user should not be able to clear a given value
     if (this.state.gameState[this.state.selectedCellRow][this.state.selectedCellCol].isGivenValue) return;
 
-    var cloned = JSON.parse(JSON.stringify(this.state.gameState));
+    var cloned = this.cloneGameState();
     cloned[this.state.selectedCellRow][this.state.selectedCellCol].value = 0;
+
+    if (this.state.autoNotes) {
+      logic.calculateNotes(cloned);
+    }
 
     this.setState({
       gameState: cloned
@@ -76,7 +88,7 @@ export default class App extends React.Component {
     }
     if (!inputFoundInCurrent) newNotes.push(input);
 
-    var cloned = JSON.parse(JSON.stringify(this.state.gameState));
+    var cloned = this.cloneGameState();
     cloned[this.state.selectedCellRow][this.state.selectedCellCol].notes = newNotes;
 
     this.setState({
@@ -87,12 +99,29 @@ export default class App extends React.Component {
   handleClearNotes() {
     if (this.state.selectedCellRow == null || this.state.selectedCellCol == null) return;
 
-    var cloned = JSON.parse(JSON.stringify(this.state.gameState));
+    var cloned = this.cloneGameState();
     cloned[this.state.selectedCellRow][this.state.selectedCellCol].notes = [];
 
     this.setState({
       gameState: cloned
     })
+  }
+
+  handleAutoNotesToggle() {
+    let newAutoNotesValue = !this.state.autoNotes;
+
+    if (newAutoNotesValue) {
+      var cloned = this.cloneGameState();
+      logic.calculateNotes(cloned);
+
+      this.setState({gameState: cloned});
+    }
+
+    this.setState({autoNotes: newAutoNotesValue});
+  }
+
+  cloneGameState() {
+    return JSON.parse(JSON.stringify(this.state.gameState));
   }
 
   render() {
@@ -133,7 +162,8 @@ export default class App extends React.Component {
             <NumberInput value="9" onInputValue={this.handleInputValue} onInputNote={this.handleInputNote} />
           </div>
           <div id="additionalActions">
-            
+            <p><b>Play with help:</b> If you check the option bellow, the App will calculate all possible values of each cell and set them as notes, so you do not have to set notes by yourself, and you can see what cell can be solved a lot easier.</p>
+            <input type="checkbox"  onChange={this.handleAutoNotesToggle} defaultChecked={this.state.autoNotes} /> Calculate notes automatically
           </div>
         </div>
       </div>
