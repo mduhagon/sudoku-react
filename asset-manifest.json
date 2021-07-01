@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/sudoku-react/static/css/main.33da13ec.chunk.css",
-    "main.js": "/sudoku-react/static/js/main.7df181fe.chunk.js",
-    "main.js.map": "/sudoku-react/static/js/main.7df181fe.chunk.js.map",
+    "main.js": "/sudoku-react/static/js/main.f980562e.chunk.js",
+    "main.js.map": "/sudoku-react/static/js/main.f980562e.chunk.js.map",
     "runtime-main.js": "/sudoku-react/static/js/runtime-main.84e1398f.js",
     "runtime-main.js.map": "/sudoku-react/static/js/runtime-main.84e1398f.js.map",
     "static/js/2.db981ac6.chunk.js": "/sudoku-react/static/js/2.db981ac6.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.84e1398f.js",
     "static/js/2.db981ac6.chunk.js",
     "static/css/main.33da13ec.chunk.css",
-    "static/js/main.7df181fe.chunk.js"
+    "static/js/main.f980562e.chunk.js"
   ]
 }
