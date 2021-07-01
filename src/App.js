@@ -13,8 +13,8 @@ export default class App extends React.Component {
 
     this.state = {
       gameState: gameGrid,
-      selectedCellRow: 0,
-      selectedCellCol: 0,
+      selectedCellRow: 4,
+      selectedCellCol: 4,
     };
 
     this.handleCellSelected = this.handleCellSelected.bind(this);
@@ -86,7 +86,7 @@ export default class App extends React.Component {
 
   handleClearNotes() {
     if (this.state.selectedCellRow == null || this.state.selectedCellCol == null) return;
-    
+
     var cloned = JSON.parse(JSON.stringify(this.state.gameState));
     cloned[this.state.selectedCellRow][this.state.selectedCellCol].notes = [];
 
