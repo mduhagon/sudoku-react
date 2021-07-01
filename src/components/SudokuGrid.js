@@ -1,11 +1,32 @@
 import React from 'react';
 import SudokuCell from './SudokuCell'
+import * as logic from '../logic/sudoku_core.js';
 
 export default class SudokuGrid extends React.Component {
+
+    cellIsSelected(rowIndex, colIndex) {
+        return (
+            this.props.selectedCellRow === rowIndex && 
+            this.props.selectedCellCol === colIndex
+        );
+    } 	
+
+    cellIsHighlighted(rowIndex, colIndex) {
+        return (
+            this.props.highlightedDict != null && 
+            this.props.highlightedDict.hasOwnProperty(logic.getCellKey(rowIndex, colIndex))
+        );
+    }
+
+    cellIsConflicting(rowIndex, colIndex) {
+        return (
+            this.props.conflictingDict != null && 
+            this.props.conflictingDict.hasOwnProperty(logic.getCellKey(rowIndex, colIndex))
+        );
+    }
+
     render() {
         const rowlist = [];
-
-        console.log(this.props.gameValues);    
 
         let rowIndex = 0;
         this.props.gameValues.forEach((row) => {
@@ -22,10 +43,12 @@ export default class SudokuGrid extends React.Component {
                         colIndex={colIndex}
                         value={cell.value} 
                         isGivenValue={cell.isGivenValue} 
-                        isSelected={cell.isSelected} 
-                        isHighlighted={cell.isHighlighted} 
-                        isConflicting={cell.isConflicting}
-                        notes={cell.notes} />
+                        isSelected={this.cellIsSelected(rowIndex, colIndex)} 
+                        isHighlighted={this.cellIsHighlighted(rowIndex, colIndex)} 
+                        isConflicting={this.cellIsConflicting(rowIndex, colIndex)}
+                        notes={cell.notes} 
+                        onCellClick={this.props.onCellClick}    
+                        />
                 );
                 colIndex++;
             });

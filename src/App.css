@@ -6,10 +6,12 @@ body {
   padding-left: 2em;
   padding-right: 2em;
   background-color: #f3f3f0;
+  color: #30362F;
   font-family: 'Open Sans', sans-serif;
 }
 
 h1 {
+  color: #30362F;
   font-family: 'Volkhov', serif;
   text-align: center;
   font-weight: 800;
@@ -40,7 +42,7 @@ h2 {
 
 .rightColumn {
   float: left;
-  width: 50%;
+  width: 720px;
   padding-top: 2.05em;
 }
 
@@ -72,11 +74,15 @@ h2 {
 }
 
 .cell.related {
-  background-color: #edffec;
+  background-color: #CAE2E3;
 }
 
 .cell.selected {
-  background-color: #caf7e3;
+  background-color: #A1CCCE;
+}
+
+.cell.wrong {
+  color: #CA054D;
 }
 
 .note-1, .note-2, .note-3, .note-4, .note-5, .note-6, .note-7, .note-8, .note-9 {

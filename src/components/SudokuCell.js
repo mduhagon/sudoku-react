@@ -1,6 +1,15 @@
 import React from 'react';
 
 export default class SudokuCell extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(e) {
+        this.props.onCellClick(this.props.rowIndex, this.props.colIndex);
+    }
+
     // Empty cells internally are represented with 0,
     // but we do not want to display this to the user.
     getRenderValue = () => {
@@ -23,10 +32,15 @@ export default class SudokuCell extends React.Component {
     }
 
     render() {
+        let listNotes = [];
+        this.props.notes.forEach((note) => {
+            listNotes.push(<div className={"note-" + note }>{note}</div>)
+        });
+
         return (
-            <td key={this.getCellId()} id={this.getCellId()} className={this.getClasses()}>
+            <td key={this.getCellId()} id={this.getCellId()} className={this.getClasses()} onClick={this.handleClick}>
                {this.getRenderValue()}
-               <div className="note-1">1</div>
+               {listNotes}     
             </td>
         );
     }
