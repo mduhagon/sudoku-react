@@ -1,21 +1,38 @@
 const games_store = require('./initial_games.js'); 
 
 function getInitialGame(difficulty = 'easy') {
+    let gameId = "";
+    let game = null;
+    let idx = null;
+
     switch(difficulty) {
         case "easy":
-            return getRandomElementFromArray(games_store.games_easy);
+            idx = getRandomNumber(games_store.games_easy.length);
+            gameId = 'Easy-'+idx;
+            game = games_store.games_easy[idx];
+            break;
         case "medium":
-            return getRandomElementFromArray(games_store.games_medium);
+            idx = getRandomNumber(games_store.games_medium.length);
+            gameId = 'Medium-'+idx;
+            game = games_store.games_medium[idx];
+            break;
         case "hard":
-            return getRandomElementFromArray(games_store.games_hard);
+            idx = getRandomNumber(games_store.games_medium.length);
+            gameId = 'Hard-'+idx;
+            game = games_store.games_hard[idx];
+            break;
         default:
           throw new TypeError('Unsupported difficulty: '+difficulty);
-      }
+    }
+
+    return {
+        gameId: gameId,
+        game: game
+    }
 }
 
-function getRandomElementFromArray(array) {
-    let randomIndex = Math.floor(Math.random()*array.length);
-    return array[randomIndex];
+function getRandomNumber(max) {
+    return Math.floor(Math.random()*max);
 }
 
 // In order to implement all the functionalities of our Sudoku game,
@@ -29,7 +46,10 @@ function createCell(cellValue, givenValue = false) {
     return {
         value: cellValue,
         isGivenValue: givenValue, // this means the value came with the initial game, cannot be changed by user later
-        display: null // this will be used to 'link' a core cell to a React Cell
+        isSelected: false, // A selected cell has been clicked by the user, and is where they may enter the next value, note, etc.
+        isHighlighted: false, // A highlighted cell is related / relevant to the selected one (ie belongs to the same row, col, or box, or has the same value)
+        isConflicting: false, // A conflicting cell is probably wrong, when the grid contains them, it is not a correct grid (some of the game rules are being brocken)
+        notes: [] // contains ints. These are to be displayed as posible values that could go in this cell
     }
 }
 

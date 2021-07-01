@@ -2,7 +2,7 @@ const sudoku_core = require('./logic/sudoku_core');
 
 test('getInitialGame returns a valid game string', () => {
     let initialGame = sudoku_core.getInitialGame();
-    expect(initialGame.length).toEqual(81);
+    expect(initialGame.game.length).toEqual(81);
 });
 
 test('constructSudokuGrid can parse a valid input string', () => {
